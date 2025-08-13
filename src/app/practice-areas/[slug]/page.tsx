@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import type { PracticeArea } from "../../../lib/types";
 import { SeoClientComponent } from "@/components/SeoClientComponent";
 
-// This function tells Next.js which pages to pre-build at build time (SSG)
-// This is excellent for SEO and performance.
 export async function generateStaticParams() {
   const areas = getPracticeAreas();
   return areas.map((area: PracticeArea) => ({
@@ -12,20 +10,20 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function PracticeAreaDetailPage({
+export default async function PracticeAreaDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const areas = getPracticeAreas();
-  const area = areas.find((a: PracticeArea) => a.slug === params.slug);
+  const area = areas.find((a: PracticeArea) => a.slug === slug);
   const config = getSiteConfig();
 
   if (!area) {
     notFound();
   }
 
-  // Prepare SEO data on the server
   const seo = {
     title: `${area.title} Lawyer in Patna`,
     description: area.summary,
