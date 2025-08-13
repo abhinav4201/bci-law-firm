@@ -2,7 +2,7 @@ import { getBlogPosts } from "@/lib/content";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { BlogPost } from "@/lib/types";
-import { Calendar, User } from "lucide-react";
+import { Calendar, User, Tag } from "lucide-react";
 
 export const revalidate = 3600;
 
@@ -28,7 +28,8 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: post.summary,
+    description: post.metaDescription, // Use the specific meta description
+    keywords: post.tags,
   };
 }
 
@@ -60,6 +61,20 @@ export default async function BlogPostPage({
           <span>{post.author}</span>
         </div>
       </div>
+      {/* --- DISPLAY TAGS --- */}
+      {post.tags && post.tags.length > 0 && (
+        <div className='flex items-center flex-wrap gap-2 mb-8'>
+          <Tag className='h-5 w-5 text-muted' />
+          {post.tags.map((tag) => (
+            <span
+              key={tag}
+              className='bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-full'
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
       <div
         className='prose prose-lg max-w-none text-foreground leading-relaxed'
         dangerouslySetInnerHTML={{ __html: post.content }}

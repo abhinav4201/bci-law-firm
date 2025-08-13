@@ -1,4 +1,4 @@
-import { getPracticeAreas, getSiteConfig } from "../../../lib/content";
+import { getPracticeAreas, getSiteConfig } from "../../../lib/content-server";
 import { notFound } from "next/navigation";
 import type { PracticeArea } from "../../../lib/types";
 import { SeoClientComponent } from "@/components/SeoClientComponent";

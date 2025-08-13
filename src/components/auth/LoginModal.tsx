@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
  
 "use client";
 
@@ -23,31 +25,36 @@ export const LoginModal = () => {
       const result = await signInWithPopup(auth, provider);
       const idToken = await result.user.getIdToken();
 
-      // Send token and necessary info to our backend API
-      const response = await fetch("/api/auth/assign-role", {
+      // First, ensure the user's role is set correctly on the backend
+      const roleResponse = await fetch("/api/auth/assign-role", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           idToken,
           selectedRole: view,
-          password: view === "moderator" ? password : null, // Send password only if moderator
+          password: view === "moderator" ? password : null,
         }),
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setUser(result.user); // Update global state
-        closeModal();
-        router.push("/admin/dashboard"); // Redirect to dashboard
-      } else {
-        // Log out the user if role assignment failed
-        await auth.signOut();
-        setError(data.error || "Failed to assign role. Access denied.");
+      if (!roleResponse.ok) {
+        const errorData = await roleResponse.json();
+        throw new Error(errorData.error || "Role assignment failed.");
       }
-    } catch (err) {
-      setError("Failed to sign in with Google.");
+
+      // NOW, create the server-side session cookie
+      await fetch("/api/auth/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+
+      // Finally, redirect
+      router.push("/admin/dashboard");
+      closeModal();
+    } catch (err: any) {
+      setError(err.message || "An error occurred during sign-in.");
       console.error(err);
+      await auth.signOut(); // Ensure user is signed out on failure
     }
   };
 

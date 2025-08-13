@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { getPracticeAreas } from "../../lib/content";
+import { getPracticeAreas } from "../../lib/content-server";
 import type { PracticeArea } from "../../lib/types";
 
 export default function PracticeAreasPage() {

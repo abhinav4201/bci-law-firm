@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { SiteConfig } from "@/lib/types"; 
+import { getSiteConfig } from "@/lib/content-server";
 
-export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
-  const { advocateName, contact, disclaimer } = siteConfig;
+export const Footer = () => {
+  const { advocateName, contact, disclaimer } = getSiteConfig();
 
   return (
-    <footer className='bg-[#020617] text-white'>
+    <footer
+      style={{ backgroundColor: "var(--color-brand-primary)" }}
+      className='text-gray-300'
+    >
       <div className='container mx-auto py-16 px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-12'>
           <div className='md:col-span-1'>
@@ -21,10 +24,11 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
               Quick Links
             </h3>
             <ul className='space-y-3'>
+              {/* Links use the new, high-contrast accent color */}
               <li>
                 <Link
                   href='/profile'
-                  className='text-gray-300 hover:text-white hover:underline'
+                  className='text-gray-300 hover:text-brand-accent'
                 >
                   Advocate Profile
                 </Link>
@@ -32,7 +36,7 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
               <li>
                 <Link
                   href='/practice-areas'
-                  className='text-gray-300 hover:text-white hover:underline'
+                  className='text-gray-300 hover:text-brand-accent'
                 >
                   Practice Areas
                 </Link>
@@ -40,7 +44,7 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
               <li>
                 <Link
                   href='/contact'
-                  className='text-gray-300 hover:text-white hover:underline'
+                  className='text-gray-300 hover:text-brand-accent'
                 >
                   Contact
                 </Link>
@@ -56,7 +60,7 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
               <li>
                 <a
                   href={`mailto:${contact.email}`}
-                  className='hover:text-white hover:underline'
+                  className='hover:text-brand-accent'
                 >
                   {contact.email}
                 </a>
@@ -64,7 +68,7 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
               <li>
                 <a
                   href={`tel:${contact.phone}`}
-                  className='hover:text-white hover:underline'
+                  className='hover:text-brand-accent'
                 >
                   {contact.phone}
                 </a>
@@ -72,14 +76,10 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
             </ul>
           </div>
         </div>
-        <div className='mt-16 pt-8 border-t border-gray-800 text-center text-gray-500'>
+        <div className='mt-16 pt-8 border-t border-gray-700 text-center text-gray-500'>
           <p>
             &copy; {new Date().getFullYear()} {advocateName}. All Rights
             Reserved.
-          </p>
-          <p className='text-xs mt-2'>
-            Website designed and developed in compliance with Bar Council of
-            India regulations.
           </p>
         </div>
       </div>

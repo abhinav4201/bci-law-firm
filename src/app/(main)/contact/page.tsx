@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { getSiteConfig } from "../../lib/content";
+import { getSiteConfig } from "../../lib/content-server";
 
 export default function ContactPage() {
   const { contact, disclaimer } = getSiteConfig();

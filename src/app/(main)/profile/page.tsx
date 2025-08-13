@@ -1,4 +1,4 @@
-import { getProfile, getSiteConfig } from "../../lib/content";
+import { getProfile, getSiteConfig } from "../../lib/content-server";
 import { Award, GraduationCap } from "lucide-react";
 import type { Metadata } from "next";
 

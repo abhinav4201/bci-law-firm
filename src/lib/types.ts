@@ -38,6 +38,8 @@ export interface BlogPost {
   content: string;
   publishedDate: string;
   author: string;
+  metaDescription: string;
+  tags: string[];
 }
 
 // NEW TYPE FOR USERS
