@@ -4,6 +4,11 @@ import type { Metadata } from "next";
 import { BlogPost } from "@/lib/types";
 import { Calendar, User } from "lucide-react";
 
+// Define the PageProps interface
+interface PageProps {
+  params: { slug: string };
+}
+
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -15,9 +20,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const posts = await getBlogPosts();
   const post = posts.find((p: BlogPost) => p.slug === params.slug);
 
@@ -31,11 +34,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function BlogPostPage({ params }: PageProps) {
   const posts = await getBlogPosts();
   const post = posts.find((p: BlogPost) => p.slug === params.slug);
 
