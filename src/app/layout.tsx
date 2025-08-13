@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { getSiteConfig } from "@/lib/content";
 import { Background } from "@/components/common/Background";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </div>
+        <Analytics />
       </body>
     </html>
   );
