@@ -1,9 +1,12 @@
-import Link from "next/link";
-import { getSiteConfig } from "@/lib/content";
-import { Menu } from "lucide-react";
+"use client"; // Add this line
 
-export const Header = () => {
-  const { advocateName } = getSiteConfig();
+import Link from "next/link";
+// import { getSiteConfig } from "@/lib/content";
+import { Menu } from "lucide-react";
+import { useAuth } from "@/context/AuthContext"; // Import useAuth
+
+export const Header = ({ advocateName }: { advocateName: string }) => {
+  const { openLoginModal } = useAuth(); // Get the modal function
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -18,11 +21,7 @@ export const Header = () => {
       <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex items-center justify-between h-16'>
           <div className='flex-shrink-0'>
-            <Link
-              href='/'
-              className='text-xl font-bold'
-              style={{ color: "var(--color-brand-primary)" }}
-            >
+            <Link href='/' className='text-xl font-bold'>
               {advocateName}
             </Link>
           </div>
@@ -37,6 +36,13 @@ export const Header = () => {
                   {link.name}
                 </Link>
               ))}
+              {/* Add the Admin button here */}
+              <button
+                onClick={openLoginModal}
+                className='bg-brand-secondary text-white px-3 py-2 rounded-md text-sm font-medium'
+              >
+                Admin
+              </button>
             </div>
           </nav>
           <div className='md:hidden'>

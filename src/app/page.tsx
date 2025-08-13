@@ -1,4 +1,8 @@
-import { getPracticeAreas, getProfile, getSiteConfig } from "@/lib/content";
+import {
+  getPracticeAreas,
+  getProfile,
+  getSiteConfig,
+} from "@/lib/content-server";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { PracticeArea } from "@/lib/types";

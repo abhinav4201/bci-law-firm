@@ -30,13 +30,21 @@ export interface SiteConfig {
   disclaimer: string;
 }
 
-// NEW TYPE FOR BLOG POSTS
 export interface BlogPost {
   id: string;
   slug: string;
   title: string;
   summary: string;
   content: string;
-  publishedDate: string; // Stored as a string e.g., "August 12, 2025"
+  publishedDate: string;
   author: string;
+}
+
+// NEW TYPE FOR USERS
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  role: "admin" | "moderator" | "user";
 }

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { getSiteConfig } from "@/lib/content";
+import { SiteConfig } from "@/lib/types"; 
 
-export const Footer = () => {
-  const { advocateName, contact, disclaimer } = getSiteConfig();
+export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
+  const { advocateName, contact, disclaimer } = siteConfig;
 
   return (
     <footer className='bg-[#020617] text-white'>
