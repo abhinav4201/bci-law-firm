@@ -1,26 +1,38 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-sans: 'Inter', sans-serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* High-Contrast & Professional Color Palette */
+  --color-background: #f8fafc; /* A very light, clean gray */
+  --color-foreground: #020617; /* A strong, dark slate for text */
+  --color-card: #ffffff;       /* Clean white for cards */
+  --color-muted: #475569;      /* Muted text for secondary info */
+  --color-border: #e2e8f0;     /* A subtle border color */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand-primary: #1e3a8a; /* A slightly richer, professional blue */
+  --color-brand-secondary: #3b82f6; /* A brighter blue for links and accents */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-brand-primary);
+  font-weight: 700;
+}
+
+a {
+  color: var(--color-brand-secondary);
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--color-brand-primary);
 }
