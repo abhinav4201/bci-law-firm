@@ -1,4 +1,7 @@
-import { getPracticeAreas, getSiteConfig } from "../../../../lib/content-server";
+import {
+  getPracticeAreas,
+  getSiteConfig,
+} from "../../../../lib/content-server";
 import { notFound } from "next/navigation";
 import type { PracticeArea } from "../../../../lib/types";
 import type { Metadata } from "next";
@@ -13,9 +16,10 @@ async function getArea(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const area = await getArea(params.slug);
+  const { slug } = await params;
+  const area = await getArea(slug);
   const config = getSiteConfig();
 
   if (!area) {
@@ -72,9 +76,10 @@ export async function generateStaticParams() {
 export default async function PracticeAreaDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const area = await getArea(params.slug);
+  const { slug } = await params;
+  const area = await getArea(slug);
 
   if (!area) {
     notFound();
