@@ -7,7 +7,13 @@ import { BlogPost } from "@/lib/types";
 import Link from "next/link";
 import { Editor } from "@tinymce/tinymce-react";
 
-export const PostEditor = ({ post }: { post?: BlogPost }) => {
+export const PostEditor = ({
+  post,
+  isGuide = false,
+}: {
+  post?: BlogPost;
+  isGuide?: boolean;
+}) => {
   const router = useRouter();
 
   // State for all form fields
@@ -21,7 +27,7 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
   );
   const [tags, setTags] = useState(post?.tags?.join(", ") || "");
   // --- NEW STATE FIELDS ---
-  const [type, setType] = useState<"blog" | "guide">(post?.type || "blog");
+   const [type] = useState<"blog" | "guide">(isGuide ? "guide" : "blog");
   const [topic, setTopic] = useState(post?.topic || "");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -136,7 +142,7 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
 
       {/* --- NEWLY ADDED SECTION FOR TYPE AND TOPIC --- */}
       <div className='grid md:grid-cols-2 gap-6'>
-        <div>
+        {/* <div>
           <label
             htmlFor='type'
             className='block text-sm font-medium text-gray-700'
@@ -152,7 +158,7 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
             <option value='blog'>Blog Post</option>
             <option value='guide'>Legal Guide</option>
           </select>
-        </div>
+        </div> */}
         <div>
           <label
             htmlFor='topic'

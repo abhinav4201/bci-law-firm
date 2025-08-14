@@ -4,25 +4,43 @@ import { useState } from "react";
 import { BlogPost } from "@/lib/types";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
+import { Pagination } from "./common/Pagination"; // --- IMPORT Pagination ---
 
 interface BlogFilterProps {
   initialPosts: BlogPost[];
   initialTopics: string[];
 }
 
+const POSTS_PER_PAGE = 5; // --- SET POSTS PER PAGE ---
+
 export function BlogFilter({ initialPosts, initialTopics }: BlogFilterProps) {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1); // --- NEW: Pagination state ---
 
-  const filteredPosts = selectedTopic
+  // Apply topic filter first
+  const topicFilteredPosts = selectedTopic
     ? initialPosts.filter((post) => post.topic === selectedTopic)
     : initialPosts;
 
+  // --- NEW: Pagination Logic ---
+  const totalPages = Math.ceil(topicFilteredPosts.length / POSTS_PER_PAGE);
+  const paginatedPosts = topicFilteredPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
+
+  const handleTopicChange = (topic: string | null) => {
+    setSelectedTopic(topic);
+    setCurrentPage(1); // Reset to first page when topic changes
+  };
+  // --- END NEW ---
+
   return (
     <div>
-      {/* --- Topic Filter UI --- */}
+      {/* --- Topic Filter UI (Updated to use handleTopicChange) --- */}
       <div className='flex justify-center flex-wrap gap-2 mb-12'>
         <button
-          onClick={() => setSelectedTopic(null)}
+          onClick={() => handleTopicChange(null)}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             !selectedTopic
               ? "bg-brand-primary text-white"
@@ -34,7 +52,7 @@ export function BlogFilter({ initialPosts, initialTopics }: BlogFilterProps) {
         {initialTopics.map((topic) => (
           <button
             key={topic}
-            onClick={() => setSelectedTopic(topic)}
+            onClick={() => handleTopicChange(topic)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedTopic === topic
                 ? "bg-brand-primary text-white"
@@ -46,9 +64,9 @@ export function BlogFilter({ initialPosts, initialTopics }: BlogFilterProps) {
         ))}
       </div>
 
-      {/* --- Display Filtered Posts --- */}
+      {/* --- Display Paginated Posts --- */}
       <div className='space-y-10'>
-        {filteredPosts.map((post: BlogPost) => (
+        {paginatedPosts.map((post: BlogPost) => (
           <Link
             href={`/blog/${post.slug}`}
             key={post.id}
@@ -69,12 +87,19 @@ export function BlogFilter({ initialPosts, initialTopics }: BlogFilterProps) {
             </span>
           </Link>
         ))}
-        {filteredPosts.length === 0 && (
+        {paginatedPosts.length === 0 && (
           <p className='text-center text-muted text-lg py-10'>
             No articles found for this topic.
           </p>
         )}
       </div>
+
+      {/* --- NEW: Render Pagination Component --- */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

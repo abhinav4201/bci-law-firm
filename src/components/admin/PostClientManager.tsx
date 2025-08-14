@@ -17,8 +17,10 @@ type Post = {
 
 export const PostClientManager = ({
   initialPosts,
+  postType = "post",
 }: {
   initialPosts: Post[];
+  postType?: "post" | "guide";
 }) => {
   const [posts, setPosts] = useState(initialPosts);
   const router = useRouter();
@@ -62,7 +64,7 @@ export const PostClientManager = ({
                 <td className='p-2'>{post.publishedDate}</td>
                 <td className='p-2 flex items-center space-x-2'>
                   <Link
-                    href={`/admin/posts/edit/${post.id}`}
+                    href={`/admin/${postType}s/${post.id}`}
                     className='p-1 text-blue-600 hover:text-blue-800'
                     title='Edit'
                   >

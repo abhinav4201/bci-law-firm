@@ -4,22 +4,44 @@ import {
   getDocs,
   query,
   orderBy,
+  where, // --- IMPORT 'where' ---
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
-import { BlogPost } from "./types"; // Assuming BlogPost is in types
+import { BlogPost } from "./types";
 
-// This function is safe to run on client or server
-export async function getBlogPosts(): Promise<BlogPost[]> {
+// --- MODIFIED FUNCTION ---
+// It now accepts an optional 'type' argument to filter the content.
+export async function getPosts(type?: "blog" | "guide"): Promise<BlogPost[]> {
   const postsCol = collection(db, "posts");
-  const q = query(postsCol, orderBy("publishedDate", "desc"));
+
+  // Start with the base query
+  let q = query(postsCol, orderBy("publishedDate", "desc"));
+
+  // If a type is specified, add the "where" clause to filter
+  if (type) {
+    q = query(
+      postsCol,
+      where("type", "==", type),
+      orderBy("publishedDate", "desc")
+    );
+  }
+
   const postSnapshot = await getDocs(q);
   const postList = postSnapshot.docs.map(
-    (doc: QueryDocumentSnapshot<DocumentData>) =>
-      ({
+    (doc: QueryDocumentSnapshot<DocumentData>) => {
+      const data = doc.data();
+      return {
         id: doc.id,
-        ...doc.data(),
-      } as BlogPost)
+        ...data,
+        // Convert Timestamp to a user-friendly date string immediately
+        publishedDate: data.publishedDate.toDate().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      } as BlogPost;
+    }
   );
   return postList;
 }

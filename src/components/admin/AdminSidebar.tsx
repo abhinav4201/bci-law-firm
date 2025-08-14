@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, Users, FileText, LogOut, Mail } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  LogOut,
+  Mail,
+  BookText,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation"; // Import useRouter
 import { auth } from "@/lib/firebase";
 
@@ -24,7 +31,8 @@ export const AdminSidebar = ({ user }: { user: User }) => {
 
   const navLinks = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Posts", href: "/admin/posts", icon: FileText },
+    { name: "Blog", href: "/admin/posts", icon: FileText },
+    { name: "Legal Guides", href: "/admin/guides", icon: BookText },
     { name: "Enquiries", href: "/admin/enquiries", icon: Mail },
     ...(user.role === "admin"
       ? [{ name: "Users", href: "/admin/users", icon: Users }]

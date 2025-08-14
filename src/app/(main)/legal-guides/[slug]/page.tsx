@@ -6,8 +6,9 @@ import { Calendar, User, Tag } from "lucide-react";
 
 export const revalidate = 3600;
 
+// This function ensures Next.js pre-builds all your guide pages
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts = await getPosts("guide"); // Fetch only guides
   return posts.map((post: BlogPost) => ({
     slug: post.slug,
   }));
@@ -16,30 +17,31 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const posts = await getPosts();
+  const { slug } = params;
+  const posts = await getPosts("guide"); // Fetch only guides
   const post = posts.find((p: BlogPost) => p.slug === slug);
 
   if (!post) {
-    return { title: "Post not found" };
+    return { title: "Guide not found" };
   }
 
   return {
     title: post.title,
-    description: post.metaDescription, // Use the specific meta description
+    description: post.metaDescription,
     keywords: post.tags,
   };
 }
 
-export default async function BlogPostPage({
+// This is the page component that renders the guide
+export default async function LegalGuidePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const posts = await getPosts();
+  const posts = await getPosts("guide"); // Fetch only guides
   const post = posts.find((p: BlogPost) => p.slug === slug);
 
   if (!post) {
@@ -61,7 +63,6 @@ export default async function BlogPostPage({
           <span>{post.author}</span>
         </div>
       </div>
-      {/* --- DISPLAY TAGS --- */}
       {post.tags && post.tags.length > 0 && (
         <div className='flex items-center flex-wrap gap-2 mb-8'>
           <Tag className='h-5 w-5 text-muted' />

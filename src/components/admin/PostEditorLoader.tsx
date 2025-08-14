@@ -12,7 +12,13 @@ const PostEditor = dynamic(
   }
 );
 
-// This wrapper component receives the server-fetched data and passes it down
-export function PostEditorLoader({ post }: { post?: BlogPost }) {
-  return <PostEditor post={post} />;
+// This wrapper component now passes an `isGuide` prop
+export function PostEditorLoader({
+  post,
+  isGuide = false,
+}: {
+  post?: BlogPost;
+  isGuide?: boolean;
+}) {
+  return <PostEditor post={post} isGuide={isGuide} />;
 }

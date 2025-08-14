@@ -1,18 +1,13 @@
-import { getBlogPosts } from "@/lib/content";
+import { getPosts } from "@/lib/content"; // --- Use the generic getPosts function ---
 import { BlogFilter } from "@/components/BlogFilter";
 
-// --- CORRECTED: Re-added the revalidate constant ---
-// This tells Next.js to regenerate this page at most once every hour,
-// ensuring new blog posts are fetched without a full redeployment.
-export const revalidate = 3600; // Revalidate at most every hour
+export const revalidate = 3600;
 
-// This remains a Server Component for optimal SEO
 export default async function BlogPage() {
-  const allPosts = await getBlogPosts();
-  // Filter for only blog posts on the server, ensuring the initial page load is clean
-  const blogPosts = allPosts.filter((p) => p.type === "blog");
+  // --- CORRECTED: Fetch only posts with type 'blog' ---
+  const blogPosts = await getPosts("blog");
 
-  // Calculate unique topics on the server to pass down to the client component
+  // Calculate unique topics from the fetched blog posts
   const uniqueTopics = [
     ...new Set(blogPosts.map((p) => p.topic).filter(Boolean)),
   ];
@@ -23,10 +18,6 @@ export default async function BlogPage() {
         Legal Insights & Articles
       </h1>
 
-      {/*
-        The initial render is handled on the server, which is perfect for SEO.
-        The BlogFilter component then takes over on the client-side for interactivity.
-      */}
       <BlogFilter initialPosts={blogPosts} initialTopics={uniqueTopics} />
     </div>
   );
