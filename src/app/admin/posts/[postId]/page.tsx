@@ -1,15 +1,15 @@
 import { adminDb } from "@/lib/firebaseAdmin";
 import { notFound } from "next/navigation";
 import { BlogPost } from "@/lib/types";
-import { PostEditorLoader } from "@/components/admin/PostEditorLoader"; // Import the new loader
+import { PostEditorLoader } from "@/components/admin/PostEditorLoader";
 
 // This page remains a Server Component for fetching data
 export default async function EditPostPage({
   params,
 }: {
-  params: { postId: string };
+  params: Promise<{ postId: string }>;
 }) {
-  const { postId } = params;
+  const { postId } = await params;
   const isNewPost = postId === "new";
 
   let post: BlogPost | undefined = undefined;
@@ -30,7 +30,7 @@ export default async function EditPostPage({
       author: data?.author,
       slug: data?.slug,
       publishedDate: data?.publishedDate.toDate().toISOString(),
-      metaDescription: data?.metaDescription || "", // Added
+      metaDescription: data?.metaDescription || "",
       tags: data?.tags || [],
     };
   }
@@ -40,7 +40,6 @@ export default async function EditPostPage({
       <h1 className='text-3xl font-bold mb-6'>
         {isNewPost ? "Create New Post" : "Edit Post"}
       </h1>
-      {/* Render the client component which handles the dynamic import */}
       <PostEditorLoader post={post} />
     </div>
   );
