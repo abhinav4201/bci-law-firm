@@ -4,14 +4,30 @@
     "slug": "civil-litigation",
     "icon": "Landmark",
     "summary": "Handling matters related to property disputes, contractual obligations, and other civil suits.",
-    "detailedDescription": "This area of practice covers the resolution of disputes between individuals or organizations through the civil court system. It includes, but is not limited to, matters concerning property law, contract disputes, recovery suits, and injunctions. Representation is provided before various courts and forums in Patna."
+    "detailedDescription": "This area of practice covers the resolution of disputes between individuals or organizations through the civil court system. It includes, but is not limited to, matters concerning property law, contract disputes, recovery suits, and injunctions. Representation is provided before various courts and forums in Patna.",
+    "faqs": [
+      {
+        "question": "What is the first step in filing a civil suit?",
+        "answer": "The first step is to send a legal notice to the opposing party, detailing your claim and giving them a chance to respond. If there is no satisfactory response, a plaint is drafted and filed in the appropriate court."
+      },
+      {
+        "question": "How long does a civil case typically take in Patna?",
+        "answer": "The duration of a civil case can vary significantly based on its complexity, the court's workload, and procedural delays. It can range from a few months for simpler cases to several years for more complex disputes."
+      }
+    ]
   },
   {
     "title": "Criminal Law",
     "slug": "criminal-law",
     "icon": "Gavel",
     "summary": "Providing representation in criminal proceedings, including bail applications and trials.",
-    "detailedDescription": "Representation is offered for individuals facing criminal charges. This includes handling various stages of criminal proceedings, such as filing and arguing for anticipatory and regular bail applications, conducting trial proceedings, and filing appeals. The practice covers matters under the Indian Penal Code and other special statutes."
+    "detailedDescription": "Representation is offered for individuals facing criminal charges. This includes handling various stages of criminal proceedings, such as filing and arguing for anticipatory and regular bail applications, conducting trial proceedings, and filing appeals. The practice covers matters under the Indian Penal Code and other special statutes.",
+    "faqs": [
+      {
+        "question": "What is the difference between bailable and non-bailable offenses?",
+        "answer": "In a bailable offense, bail is a right and can be granted at the police station itself. In a non-bailable offense, bail is a matter of the court's discretion and must be applied for in court."
+      }
+    ]
   },
   {
     "title": "Family Law",

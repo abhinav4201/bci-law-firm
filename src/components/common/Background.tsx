@@ -13,7 +13,7 @@ export const Background = () => {
         backgroundImage: `url("${encodedSvg}")`,
         backgroundRepeat: "repeat",
         backgroundSize: "160px 160px",
-        opacity:0.2,
+        opacity:0.3,
       }}
     ></div>
   );

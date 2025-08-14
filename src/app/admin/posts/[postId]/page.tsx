@@ -32,6 +32,8 @@ export default async function EditPostPage({
       publishedDate: data?.publishedDate.toDate().toISOString(),
       metaDescription: data?.metaDescription || "",
       tags: data?.tags || [],
+      type: data?.type || "blog",
+      topic: data?.topic || "",
     };
   }
 

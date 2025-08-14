@@ -11,7 +11,7 @@ export default function ContactPage() {
       <div className='p-8 md:p-12'>
         <div className='max-w-7xl mx-auto'>
           <h1 className='text-4xl font-extrabold text-center mb-12 text-brand-primary'>
-            Contact & Enquiry
+            Contact Information
           </h1>
 
           {/* Section 1: Form and Contact Details Side-by-Side */}
@@ -22,8 +22,8 @@ export default function ContactPage() {
                 Enquiry Form
               </h2>
               <p className='text-muted mb-6'>
-                Fill in your details below. We will get in touch with you
-                shortly.
+                Please use the form below for any inquiries. We will respond at
+                the earliest possible time.
               </p>
               <ContactForm />
             </div>

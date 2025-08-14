@@ -4,6 +4,7 @@ export interface PracticeArea {
   summary: string;
   icon: string;
   detailedDescription: string;
+  faqs?: { question: string; answer: string }[];
 }
 
 export interface Profile {
@@ -41,6 +42,8 @@ export interface BlogPost {
   author: string;
   metaDescription: string;
   tags: string[];
+  type: "blog" | "guide"; // NEW
+  topic: string;
 }
 
 // NEW TYPE FOR USERS

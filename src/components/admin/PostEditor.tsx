@@ -13,7 +13,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
   // State for all form fields
   const [title, setTitle] = useState(post?.title || "");
   const [summary, setSummary] = useState(post?.summary || "");
-  // Use a state for the editor content specifically
   const [content, setContent] = useState(post?.content || "");
   const [author, setAuthor] = useState(post?.author || "");
   const [slug, setSlug] = useState(post?.slug || "");
@@ -21,6 +20,9 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
     post?.metaDescription || ""
   );
   const [tags, setTags] = useState(post?.tags?.join(", ") || "");
+  // --- NEW STATE FIELDS ---
+  const [type, setType] = useState<"blog" | "guide">(post?.type || "blog");
+  const [topic, setTopic] = useState(post?.topic || "");
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,6 +36,8 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
       .split(",")
       .map((tag) => tag.trim())
       .filter(Boolean);
+
+    // --- UPDATED POST DATA OBJECT ---
     const postData = {
       title,
       summary,
@@ -42,6 +46,8 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
       slug,
       metaDescription,
       tags: tagsArray,
+      type, // Now includes the content type
+      topic, // Now includes the topic
     };
 
     const url = post?.id ? `/api/admin/posts/${post.id}` : "/api/admin/posts";
@@ -80,7 +86,7 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
         </p>
       )}
 
-      {/* --- ALL FORM FIELDS --- */}
+      {/* --- Title, Slug, Author fields (no change) --- */}
       <div>
         <label
           htmlFor='title'
@@ -127,6 +133,46 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           required
         />
       </div>
+
+      {/* --- NEWLY ADDED SECTION FOR TYPE AND TOPIC --- */}
+      <div className='grid md:grid-cols-2 gap-6'>
+        <div>
+          <label
+            htmlFor='type'
+            className='block text-sm font-medium text-gray-700'
+          >
+            Content Type
+          </label>
+          <select
+            id='type'
+            value={type}
+            onChange={(e) => setType(e.target.value as "blog" | "guide")}
+            className='mt-1 block w-full rounded-md border-gray-300 shadow-sm'
+          >
+            <option value='blog'>Blog Post</option>
+            <option value='guide'>Legal Guide</option>
+          </select>
+        </div>
+        <div>
+          <label
+            htmlFor='topic'
+            className='block text-sm font-medium text-gray-700'
+          >
+            Topic / Category
+          </label>
+          <input
+            id='topic'
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder='e.g., Family Law'
+            className='mt-1 block w-full rounded-md border-gray-300 shadow-sm'
+            required
+          />
+        </div>
+      </div>
+      {/* --- END OF NEW SECTION --- */}
+
+      {/* --- Summary, Meta Description, Tags, Editor, Buttons (no change) --- */}
       <div>
         <label
           htmlFor='summary'
@@ -178,7 +224,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           className='mt-1 block w-full rounded-md border-gray-300 shadow-sm'
         />
       </div>
-
       <div>
         <label className='block text-sm font-medium text-gray-700 mb-1'>
           Main Content
@@ -219,7 +264,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           }}
         />
       </div>
-
       <div className='flex justify-end items-center gap-4 pt-4 border-t'>
         <Link href='/admin/posts' className='text-gray-600 hover:underline'>
           Cancel

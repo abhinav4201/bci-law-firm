@@ -117,7 +117,7 @@ export const ContactForm = () => {
           disabled={isSubmitting}
           className='w-full bg-brand-primary text-white py-3 px-4 rounded-md font-semibold hover:opacity-90 transition-opacity disabled:bg-gray-400'
         >
-          {isSubmitting ? "Sending..." : "Send Enquiry"}
+          {isSubmitting ? "Sending..." : "Submit"}
         </button>
       </div>
 

@@ -23,6 +23,7 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
     { name: "Advocate Profile", href: "/profile" },
     { name: "Practice Areas", href: "/practice-areas" },
     { name: "Blog", href: "/blog" },
+    { name: "Legal Guides", href: "/legal-guides" }, // NEW
     { name: "Contact", href: "/contact" },
   ];
 

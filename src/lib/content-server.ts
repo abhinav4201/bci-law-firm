@@ -23,3 +23,9 @@ export function getPracticeAreas(): PracticeArea[] {
   const data: PracticeArea[] = JSON.parse(fileContents);
   return data.sort((a, b) => a.title.localeCompare(b.title));
 }
+
+export function getPrivacyPolicy() {
+  const fullPath = path.join(contentDirectory, "privacyPolicy.json");
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  return JSON.parse(fileContents);
+}

@@ -51,6 +51,22 @@ export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link
+                  href='/disclaimer' // NEW
+                  className='text-gray-300 hover:text-brand-accent'
+                >
+                  Disclaimer
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='/privacy-policy'
+                  className='text-gray-300 hover:text-brand-accent'
+                >
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

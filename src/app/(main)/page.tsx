@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import type { PracticeArea } from "@/lib/types";
 import { ScrollProgressLine } from "@/components/common/ScrollProgressLine";
 import DynamicIcon from "@/components/common/DynamicIcon";
+import { RecentInsights } from "@/components/RecentInsights"; 
 
 export default function Home() {
   const { advocateName } = getSiteConfig();
@@ -103,6 +104,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
+        {/* NEW SECTION 4: RECENT INSIGHTS */}
+        <RecentInsights />
       </div>
     </>
   );
