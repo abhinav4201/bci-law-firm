@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { getSiteConfig } from "@/lib/content-server";
+import { SiteConfig } from "@/lib/types"; // Import the SiteConfig type
 
-export const Footer = () => {
-  const { advocateName, contact, disclaimer } = getSiteConfig();
+// The component now accepts the 'siteConfig' prop
+export const Footer = ({ siteConfig }: { siteConfig: SiteConfig }) => {
+  // We use the data from the prop instead of calling a function here
+  const { advocateName, contact, disclaimer } = siteConfig;
 
   return (
+    // This uses the new professional color palette defined in globals.css
     <footer
       style={{ backgroundColor: "var(--color-brand-primary)" }}
-      className='text-gray-300'
+      className='text-gray-300 relative z-20'
     >
       <div className='container mx-auto py-16 px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-12'>
@@ -24,7 +27,6 @@ export const Footer = () => {
               Quick Links
             </h3>
             <ul className='space-y-3'>
-              {/* Links use the new, high-contrast accent color */}
               <li>
                 <Link
                   href='/profile'

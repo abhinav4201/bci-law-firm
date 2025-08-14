@@ -2,6 +2,7 @@ export interface PracticeArea {
   title: string;
   slug: string;
   summary: string;
+  icon: string;
   detailedDescription: string;
 }
 

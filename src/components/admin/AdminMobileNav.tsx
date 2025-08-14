@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { LayoutDashboard, Users, FileText, X, LogOut } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { handleLogout } from "@/lib/authClient"; // We will create this helper
+import { usePathname, useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
 
 interface AdminMobileNavProps {
   userRole: "admin" | "moderator";
@@ -16,8 +16,18 @@ export const AdminMobileNav = ({
   isOpen,
   onClose,
 }: AdminMobileNavProps) => {
-  if (!isOpen) return null;
+  // CORRECTED: Hooks are now called at the top level of the component.
   const pathname = usePathname();
+  const router = useRouter();
+
+  // The conditional return now happens *after* the hooks have been called.
+  if (!isOpen) return null;
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    await fetch("/api/auth/session", { method: "DELETE" });
+    router.push("/");
+  };
 
   const navLinks = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },

@@ -2,36 +2,42 @@
   {
     "title": "Civil Litigation",
     "slug": "civil-litigation",
+    "icon": "Landmark",
     "summary": "Handling matters related to property disputes, contractual obligations, and other civil suits.",
     "detailedDescription": "This area of practice covers the resolution of disputes between individuals or organizations through the civil court system. It includes, but is not limited to, matters concerning property law, contract disputes, recovery suits, and injunctions. Representation is provided before various courts and forums in Patna."
   },
   {
     "title": "Criminal Law",
     "slug": "criminal-law",
+    "icon": "Gavel",
     "summary": "Providing representation in criminal proceedings, including bail applications and trials.",
     "detailedDescription": "Representation is offered for individuals facing criminal charges. This includes handling various stages of criminal proceedings, such as filing and arguing for anticipatory and regular bail applications, conducting trial proceedings, and filing appeals. The practice covers matters under the Indian Penal Code and other special statutes."
   },
   {
     "title": "Family Law",
     "slug": "family-law",
+    "icon": "HeartHandshake",
     "summary": "Advising on matters of marriage, divorce, child custody, and maintenance.",
     "detailedDescription": "This practice area deals with legal issues that arise within family relationships. Services include advising and representing clients in matters of marriage registration, divorce proceedings (both mutual consent and contested), child custody and visitation rights, alimony, and maintenance cases under the relevant personal laws."
   },
   {
     "title": "Property Law",
     "slug": "property-law",
+    "icon": "House",
     "summary": "Assisting with property verification, documentation, and dispute resolution.",
     "detailedDescription": "Involves legal services related to real estate and immovable property. This includes title verification, drafting and registration of sale deeds, lease agreements, and handling property disputes, partition suits, and other related litigation in the courts of Patna."
   },
   {
     "title": "Corporate Law",
     "slug": "corporate-law",
+    "icon": "Briefcase",
     "summary": "Advising on company incorporation, compliance, and contractual agreements.",
     "detailedDescription": "Providing legal advisory services to businesses and corporate entities. This includes assistance with company formation, ensuring regulatory compliance, drafting and vetting of commercial contracts, and representing companies in litigation before various tribunals and courts."
   },
   {
     "title": "Service Matters",
     "slug": "service-matters",
+    "icon": "Users",
     "summary": "Handling employment-related disputes for government and private sector employees.",
     "detailedDescription": "This area of practice pertains to the laws governing employment. Representation is provided in matters concerning wrongful termination, disciplinary proceedings, salary and pension disputes, and other service-related issues before the appropriate tribunals and the High Court."
   }

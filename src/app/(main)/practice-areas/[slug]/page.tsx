@@ -1,6 +1,6 @@
-import { getPracticeAreas, getSiteConfig } from "../../../lib/content-server";
+import { getPracticeAreas, getSiteConfig } from "../../../../lib/content-server";
 import { notFound } from "next/navigation";
-import type { PracticeArea } from "../../../lib/types";
+import type { PracticeArea } from "../../../../lib/types";
 import { SeoClientComponent } from "@/components/SeoClientComponent";
 
 export async function generateStaticParams() {

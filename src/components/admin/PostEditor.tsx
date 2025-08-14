@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { BlogPost } from "@/lib/types";
 import Link from "next/link";
+import { Editor } from "@tinymce/tinymce-react";
 
 export const PostEditor = ({ post }: { post?: BlogPost }) => {
   const router = useRouter();
-  const editorRef = useRef<{ CKEditor: any; ClassicEditor: any } | null>(null);
-  const { CKEditor, ClassicEditor } = editorRef.current || {};
 
   // State for all form fields
   const [title, setTitle] = useState(post?.title || "");
   const [summary, setSummary] = useState(post?.summary || "");
+  // Use a state for the editor content specifically
   const [content, setContent] = useState(post?.content || "");
   const [author, setAuthor] = useState(post?.author || "");
   const [slug, setSlug] = useState(post?.slug || "");
@@ -22,24 +22,10 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
   );
   const [tags, setTags] = useState(post?.tags?.join(", ") || "");
 
-  // State for editor and form status
-  const [isEditorLoaded, setIsEditorLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Dynamically load the editor on the client side
-  useEffect(() => {
-    const loadEditor = async () => {
-      const { CKEditor } = await import("@ckeditor/ckeditor5-react");
-      const ClassicEditor = await import("@ckeditor/ckeditor5-build-classic");
-      editorRef.current = { CKEditor, ClassicEditor };
-      setIsEditorLoaded(true);
-    };
-
-    loadEditor();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
@@ -68,7 +54,10 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
         body: JSON.stringify(postData),
       });
 
-      if (!response.ok) throw new Error("Failed to save the post.");
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.error || "Failed to save the post.");
+      }
 
       alert(`Post ${post?.id ? "updated" : "created"} successfully!`);
       router.push("/admin/posts");
@@ -83,15 +72,15 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='space-y-6 bg-white p-8 rounded-lg shadow'
+      className='space-y-6 bg-white p-8 rounded-lg shadow-md'
     >
       {error && (
-        <p className='text-red-500 bg-red-100 p-3 rounded text-center'>
+        <p className='text-red-600 bg-red-100 p-3 rounded text-center font-medium'>
           {error}
         </p>
       )}
 
-      {/* --- ALL FORM FIELDS ARE NOW INCLUDED --- */}
+      {/* --- ALL FORM FIELDS --- */}
       <div>
         <label
           htmlFor='title'
@@ -107,7 +96,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           required
         />
       </div>
-
       <div>
         <label
           htmlFor='slug'
@@ -124,7 +112,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           required
         />
       </div>
-
       <div>
         <label
           htmlFor='author'
@@ -140,7 +127,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           required
         />
       </div>
-
       <div>
         <label
           htmlFor='summary'
@@ -157,7 +143,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           required
         />
       </div>
-
       <div>
         <label
           htmlFor='metaDescription'
@@ -178,7 +163,6 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
           {metaDescription.length} / 160 characters
         </p>
       </div>
-
       <div>
         <label
           htmlFor='tags'
@@ -199,28 +183,51 @@ export const PostEditor = ({ post }: { post?: BlogPost }) => {
         <label className='block text-sm font-medium text-gray-700 mb-1'>
           Main Content
         </label>
-        {isEditorLoaded ? (
-          <CKEditor
-            editor={ClassicEditor}
-            data={content}
-            onChange={(event: any, editor: any) => {
-              const data = editor.getData();
-              setContent(data);
-            }}
-          />
-        ) : (
-          <p>Loading editor...</p>
-        )}
+        <Editor
+          apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+          value={content}
+          onEditorChange={(newValue) => setContent(newValue)}
+          init={{
+            height: 500,
+            menubar: false,
+            plugins: [
+              "advlist",
+              "autolink",
+              "lists",
+              "link",
+              "image",
+              "charmap",
+              "preview",
+              "anchor",
+              "searchreplace",
+              "visualblocks",
+              "code",
+              "fullscreen",
+              "insertdatetime",
+              "media",
+              "table",
+              "help",
+              "wordcount",
+            ],
+            toolbar:
+              "undo redo | blocks | " +
+              "bold italic forecolor | alignleft aligncenter " +
+              "alignright alignjustify | bullist numlist outdent indent | " +
+              "removeformat | help",
+            content_style:
+              "body { font-family:Inter,sans-serif; font-size:16px }",
+          }}
+        />
       </div>
 
-      <div className='flex justify-end items-center gap-4'>
+      <div className='flex justify-end items-center gap-4 pt-4 border-t'>
         <Link href='/admin/posts' className='text-gray-600 hover:underline'>
           Cancel
         </Link>
         <button
           type='submit'
           disabled={isLoading}
-          className='bg-brand-primary text-white px-6 py-2 rounded-lg hover:bg-brand-secondary disabled:bg-gray-400'
+          className='bg-brand-primary text-white px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:bg-gray-400'
         >
           {isLoading ? "Saving..." : post?.id ? "Update Post" : "Create Post"}
         </button>

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import { NextResponse } from "next/server";
 // We no longer need bcrypt here
 
 export async function POST(request: Request) {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const adminEmail = process.env.ADMIN_EMAIL;
     let finalRole = "user";
 
-    if (email === adminEmail) {
+    if (selectedRole === "admin" && email === adminEmail) {
       finalRole = "admin";
     } else if (selectedRole === "moderator") {
       const configDoc = await adminDb
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         );
       }
     }
-
+    await adminAuth.setCustomUserClaims(uid, { role: finalRole });
     await userRef.set({
       uid,
       email,
