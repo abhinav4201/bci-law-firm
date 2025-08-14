@@ -6,9 +6,9 @@ import { PostEditorLoader } from "@/components/admin/PostEditorLoader";
 export default async function EditGuidePage({
   params,
 }: {
-  params: { guideId: string };
+  params: Promise<{ guideId: string }>;
 }) {
-  const { guideId } = params;
+  const { guideId } = await params;
   const isNew = guideId === "new";
 
   let post: BlogPost | undefined = undefined;
