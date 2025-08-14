@@ -3,10 +3,10 @@ import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
 
 export async function PUT(
   request: Request,
-  { params }: { params: { uid: string } }
+  { params }: { params: Promise<{ uid: string }> }
 ) {
   try {
-    const { uid } = params;
+    const { uid } = await params;
     const { role } = await request.json();
 
     // Validate the role to ensure it's one of the allowed types
@@ -28,7 +28,7 @@ export async function PUT(
       message: `User role updated to ${role}.`,
     });
   } catch (error) {
-    console.error(`Error updating role for user ${params.uid}:`, error);
+    console.error(`Error updating role for user ${uid}:`, error);
     return NextResponse.json(
       { error: "Failed to update user role." },
       { status: 500 }
