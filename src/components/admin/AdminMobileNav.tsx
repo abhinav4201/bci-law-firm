@@ -16,11 +16,9 @@ export const AdminMobileNav = ({
   isOpen,
   onClose,
 }: AdminMobileNavProps) => {
-  // CORRECTED: Hooks are now called at the top level of the component.
   const pathname = usePathname();
   const router = useRouter();
 
-  // The conditional return now happens *after* the hooks have been called.
   if (!isOpen) return null;
 
   const handleLogout = async () => {

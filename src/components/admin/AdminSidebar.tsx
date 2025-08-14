@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { LayoutDashboard, Users, FileText, LogOut } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter
 import { auth } from "@/lib/firebase";
-import { handleLogout } from "@/lib/authClient";
 
 interface User {
   displayName: string;
@@ -12,20 +11,15 @@ interface User {
   role: "admin" | "moderator";
 }
 
-// CORRECTED: The props interface now only expects the 'user' object.
-interface AdminSidebarProps {
-  user: User;
-}
-
-// CORRECTED: The component now only accepts the 'user' prop.
-export const AdminSidebar = ({ user }: AdminSidebarProps) => {
+export const AdminSidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useRouter(); // Initialize router here
 
+  // Logout logic now lives directly in the component
   const handleLogout = async () => {
     await auth.signOut();
     await fetch("/api/auth/session", { method: "DELETE" });
-    router.push("/");
+    router.push("/"); // Use the router here
   };
 
   const navLinks = [
@@ -67,6 +61,7 @@ export const AdminSidebar = ({ user }: AdminSidebarProps) => {
         </ul>
       </nav>
       <div className='p-4 border-t border-gray-200'>
+        {/* CORRECTED: The onClick handler is now correctly attached */}
         <button
           onClick={handleLogout}
           className='flex items-center p-2 w-full rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100'
