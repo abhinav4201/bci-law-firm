@@ -5,11 +5,14 @@ import { useAuth } from "@/context/AuthContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+// --- ADDED LogOut and User icons ---
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const Header = ({ advocateName }: { advocateName: string }) => {
   const { user, setUser, openLoginModal } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter(); // --- ADDED useRouter for logout redirect ---
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) =>
@@ -18,12 +21,20 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
     return () => unsubscribe();
   }, [setUser]);
 
+  // --- ADDED Logout Handler ---
+  const handleLogout = async () => {
+    await auth.signOut();
+    await fetch("/api/auth/session", { method: "DELETE" });
+    setMobileMenuOpen(false); // Close menu on logout
+    router.push("/");
+  };
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Advocate Profile", href: "/profile" },
     { name: "Practice Areas", href: "/practice-areas" },
     { name: "Blog", href: "/blog" },
-    { name: "Legal Guides", href: "/legal-guides" }, // NEW
+    { name: "Legal Guides", href: "/legal-guides" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -35,6 +46,7 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
             <span className='text-xl font-bold text-white'>{advocateName}</span>
           </Link>
 
+          {/* --- Desktop Nav (No Changes) --- */}
           <nav className='hidden md:flex items-center space-x-6'>
             {navLinks.map((link) => (
               <Link key={link.name} href={link.href}>
@@ -70,6 +82,8 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
           </div>
         </div>
       </div>
+
+      {/* --- CORRECTED Mobile Nav --- */}
       {isMobileMenuOpen && (
         <div className='fixed inset-0 z-50 md:hidden'>
           <div
@@ -84,7 +98,7 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
             >
               <X className='h-6 w-6' />
             </button>
-            <nav className='flex flex-col space-y-4'>
+            <nav className='flex flex-col space-y-4 flex-grow'>
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -96,6 +110,38 @@ export const Header = ({ advocateName }: { advocateName: string }) => {
                 </Link>
               ))}
             </nav>
+
+            {/* --- ADDED Auth Buttons Section for Mobile --- */}
+            <div className='border-t pt-4'>
+              {user ? (
+                <div className='space-y-4'>
+                  <Link
+                    href='/admin/dashboard'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className='flex items-center w-full text-left text-lg font-medium text-muted hover:text-brand-primary'
+                  >
+                    <UserIcon className='mr-3 h-5 w-5' /> Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className='flex items-center w-full text-left text-lg font-medium text-muted hover:text-brand-primary'
+                  >
+                    <LogOut className='mr-3 h-5 w-5' /> Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    openLoginModal();
+                    setMobileMenuOpen(false);
+                  }}
+                  className='text-lg font-medium text-muted hover:text-brand-primary'
+                >
+                  Admin Login
+                </button>
+              )}
+            </div>
+            {/* --- END Auth Buttons Section --- */}
           </div>
         </div>
       )}

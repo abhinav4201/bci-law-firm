@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+// Add 'Settings' to the lucide-react import
 import {
   LayoutDashboard,
   Users,
@@ -8,8 +9,9 @@ import {
   LogOut,
   Mail,
   BookText,
+  Settings,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation"; // Import useRouter
+import { usePathname, useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 
 interface User {
@@ -20,13 +22,12 @@ interface User {
 
 export const AdminSidebar = ({ user }: { user: User }) => {
   const pathname = usePathname();
-  const router = useRouter(); // Initialize router here
+  const router = useRouter();
 
-  // Logout logic now lives directly in the component
   const handleLogout = async () => {
     await auth.signOut();
     await fetch("/api/auth/session", { method: "DELETE" });
-    router.push("/"); // Use the router here
+    router.push("/");
   };
 
   const navLinks = [
@@ -34,8 +35,12 @@ export const AdminSidebar = ({ user }: { user: User }) => {
     { name: "Blog", href: "/admin/posts", icon: FileText },
     { name: "Legal Guides", href: "/admin/guides", icon: BookText },
     { name: "Enquiries", href: "/admin/enquiries", icon: Mail },
+    // --- UPDATED: Conditionally add Users and Settings for Admin ---
     ...(user.role === "admin"
-      ? [{ name: "Users", href: "/admin/users", icon: Users }]
+      ? [
+          { name: "Users", href: "/admin/users", icon: Users },
+          { name: "Settings", href: "/admin/settings", icon: Settings },
+        ]
       : []),
   ];
 
