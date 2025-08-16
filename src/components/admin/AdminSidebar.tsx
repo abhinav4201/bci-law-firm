@@ -1,18 +1,10 @@
 "use client";
 
 import Link from "next/link";
-// Add 'Settings' to the lucide-react import
-import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  LogOut,
-  Mail,
-  BookText,
-  Settings,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
+import { getAdminNavLinks } from "./adminNavLinks"; // --- IMPORT THE NEW FUNCTION ---
 
 interface User {
   displayName: string;
@@ -30,19 +22,8 @@ export const AdminSidebar = ({ user }: { user: User }) => {
     router.push("/");
   };
 
-  const navLinks = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Blog", href: "/admin/posts", icon: FileText },
-    { name: "Legal Guides", href: "/admin/guides", icon: BookText },
-    { name: "Enquiries", href: "/admin/enquiries", icon: Mail },
-    // --- UPDATED: Conditionally add Users and Settings for Admin ---
-    ...(user.role === "admin"
-      ? [
-          { name: "Users", href: "/admin/users", icon: Users },
-          { name: "Settings", href: "/admin/settings", icon: Settings },
-        ]
-      : []),
-  ];
+  // --- REFACTORED: Get links from the single source of truth ---
+  const navLinks = getAdminNavLinks(user.role);
 
   return (
     <aside className='hidden md:flex flex-col w-64 bg-white border-r border-gray-200'>

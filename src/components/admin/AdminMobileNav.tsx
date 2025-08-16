@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, Users, FileText, X, LogOut, Mail, BookText } from "lucide-react";
+import { X, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
+import { getAdminNavLinks } from "./adminNavLinks"; // --- IMPORT THE NEW FUNCTION ---
 
 interface AdminMobileNavProps {
   userRole: "admin" | "moderator";
@@ -27,15 +28,8 @@ export const AdminMobileNav = ({
     router.push("/");
   };
 
-  const navLinks = [
-    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { name: "Blog", href: "/admin/posts", icon: FileText },
-    { name: "Legal Guides", href: "/admin/guides", icon: BookText },
-    { name: "Enquiries", href: "/admin/enquiries", icon: Mail }, // NEW
-    ...(userRole === "admin"
-      ? [{ name: "Users", href: "/admin/users", icon: Users }]
-      : []),
-  ];
+  // --- REFACTORED: Get links from the single source of truth ---
+  const navLinks = getAdminNavLinks(userRole);
 
   return (
     <div className='fixed inset-0 z-50 md:hidden' onClick={onClose}>
